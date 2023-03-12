@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   attacker: require("./attacker"),
   builder: require("./builder"),
   claimer: require("./claimer"),
@@ -10,4 +10,4 @@ module.exports = {
   remoteharvester: require("./remoteharvester"),
   remoteminer: require("./remoteminer"),
   upgrader: require("./upgrader")
-};
+} as Record<string, any>;

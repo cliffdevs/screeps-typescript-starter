@@ -1,4 +1,4 @@
-const roleFunctions = require("../role");
+import roleFunctions from "../role";
 
 const setSpawnInMemory = (creepName: string) => {
   Memory.creeps[creepName] = Memory.creeps[creepName] || {};
