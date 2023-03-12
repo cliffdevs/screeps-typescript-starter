@@ -1,10 +1,10 @@
 import {spawn} from "child_process";
 
-const spawnConfig = require("./spawn-config");
-const partsConfig = require("./parts-config");
-const spawnSelector = require("./spawn-selector");
+import spawnConfig from "./spawn-config";
+import * as partsConfig from "./parts-config";
+import * as spawnSelector from "./spawn-selector";
 import allRoles from "../role/role-names";
-const spawnOpts = require("./spawn-opts");
+import * as spawnOpts from "./spawn-opts";
 
 const getRoomMemory = (roomName: string) => {
   Memory.rooms = Memory.rooms || {};
@@ -95,7 +95,7 @@ const queueSpawnsForRole = (role: string, roomName: string) => {
 };
 
 const attemptToSpawn = (roomName: string) => {
-  const targetSpawner: StructureSpawn = spawnSelector.discoverSpawner(roomName);
+  const targetSpawner = spawnSelector.discoverSpawner(roomName);
   if (targetSpawner && !targetSpawner.spawning) {
     const creepConfig = peekSpawnQueue(roomName);
     console.log(roomName + " will attempt to spawn creepConfig " + JSON.stringify(creepConfig));

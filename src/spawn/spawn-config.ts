@@ -99,4 +99,4 @@ export default {
     remoteminer: 0,
     upgrader: 1
   }
-};
+} as Record<number, Record<string, number>>;

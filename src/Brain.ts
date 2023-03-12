@@ -2,9 +2,9 @@
 // apply prototypes
 import MemoryCleaner from "./utils/MemoryCleaner";
 
-require("./prototype")
+import * as prototypes from "./prototype";
 
-const commandExecutor = require("./command/command");
+import * as commandExecutor from "./command/command";
 
 /**
  * All AI logic starts here.

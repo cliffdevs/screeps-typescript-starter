@@ -1,6 +1,6 @@
 "use strict";
-const spawner = require("../spawn/spawner");
-const tower = require("../towers");
+import * as spawner from "../spawn/spawner";
+import * as tower from "../towers";
 
 function getRandomInt(max: number) {
   return Math.floor(Math.random() * Math.floor(max));

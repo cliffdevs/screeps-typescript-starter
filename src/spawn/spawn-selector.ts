@@ -2,7 +2,7 @@ const getRoomMemory = (roomName: string) => {
   return (Memory.rooms[roomName] = Memory.rooms[roomName] || {});
 };
 
-const getSpawners = (roomName: string) => {
+export const getSpawners = (roomName: string) => {
   const roomMemory = getRoomMemory(roomName);
   roomMemory.spawners = roomMemory.spawners || [];
   if (roomMemory.spawners.length === 0) {
@@ -20,7 +20,7 @@ const getSpawnerIndex = (roomName: string) => {
   return (roomMemory.spawnerIndex = roomMemory.spawnerIndex ?? 0);
 };
 
-const discoverSpawner = (roomName: string) => {
+export const discoverSpawner = (roomName: string) => {
   const spawners = getSpawners(roomName);
 
   if (spawners.length > 0) {
@@ -32,15 +32,9 @@ const discoverSpawner = (roomName: string) => {
   return null;
 };
 
-const incrementSpawner = (roomName: string) => {
+export const incrementSpawner = (roomName: string) => {
   const roomMemory = getRoomMemory(roomName);
   const spawners = getSpawners(roomName);
   const spawnerIndex = getSpawnerIndex(roomName);
   roomMemory.spawnerIndex = spawnerIndex + 1 >= spawners.length ? 0 : spawnerIndex + 1;
-};
-
-module.exports = {
-  discoverSpawner,
-  getSpawners,
-  incrementSpawner
 };

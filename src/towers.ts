@@ -63,7 +63,7 @@ const repairWithTower = (tower: StructureTower, thingToRepair: Structure) => {
  *
  * @param {Room} room
  */
-const run = (room: Room) => {
+export const run = (room: Room) => {
   const towers = room.find(FIND_MY_STRUCTURES, {
     filter: structure => structure.structureType === STRUCTURE_TOWER
   }).map(structure => structure as StructureTower);
@@ -76,8 +76,4 @@ const run = (room: Room) => {
       repairWithAllTowers(towers, thingsToRepair[0]);
     }
   }
-};
-
-module.exports = {
-  run
 };
