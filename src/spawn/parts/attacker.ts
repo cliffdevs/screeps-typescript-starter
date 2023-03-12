@@ -1,6 +1,6 @@
 const energyTiers = [300, 550, 800, 1100, 1400, 1700, 5300, 12000];
 
-const partTiers = {
+const partTiers: Record<number, Array<BodyPartConstant>> = {
   300: [ATTACK, TOUGH, TOUGH, MOVE, MOVE, MOVE],
   550: [ATTACK, ATTACK, ATTACK, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE],
   800: [
@@ -177,19 +177,15 @@ const partTiers = {
   ] // 1050 total
 };
 
-const sortHighestToLowest = (t1, t2) => (t1 > t2 ? -1 : 1);
+const sortHighestToLowest = (t1: number, t2: number) => (t1 > t2 ? -1 : 1);
 
-const filterCurrentCapacityGreaterThan = capacity => tier => capacity >= tier;
+const filterCurrentCapacityGreaterThan = (capacity: number) => (tier: number) => capacity >= tier;
 
-const selectPartTier = roomName => {
+const selectPartTier = (roomName: string) => {
   const capacity = Game.rooms[roomName].energyCapacityAvailable;
   return energyTiers.filter(filterCurrentCapacityGreaterThan(capacity)).sort(sortHighestToLowest)[0];
 };
 
-const getParts = roomName => {
+export const getParts = (roomName: string) => {
   return partTiers[selectPartTier(roomName)];
-};
-
-module.exports = {
-  getParts
 };

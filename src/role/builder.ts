@@ -39,9 +39,7 @@ const findNearestConstructionSite = (creep: Creep) => {
   return creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
 };
 
-export const roleBuilder = {
-  /** @param {Creep} creep **/
-  run: function(creep: Creep) {
+export const run = (creep: Creep) => {
     if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
       creep.memory.building = false;
       creep.say("🔄 harvest");
@@ -72,5 +70,4 @@ export const roleBuilder = {
         }
       }
     }
-  }
 };
