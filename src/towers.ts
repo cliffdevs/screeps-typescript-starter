@@ -1,12 +1,12 @@
-const enemyLocator = require("./action/locate-nearest-enemy");
-const locationUtils = require("./util/locate");
+import * as enemyLocator from "./action/locate-nearest-enemy";
+import * as locationUtils from "./util/locate";
 
 /**
  * Attack the same target with all towers.
  * @param {Array<StructureTower>} towers
  * @param {Creep} thingToAttack
  */
-const attackWithAllTowers = (towers, thingToAttack) => {
+const attackWithAllTowers = (towers: Array<StructureTower>, thingToAttack: Creep) => {
   towers.forEach(tower => attackWithTower(tower, thingToAttack));
 };
 
@@ -15,7 +15,7 @@ const attackWithAllTowers = (towers, thingToAttack) => {
  * @param {Array<StructureTower>} tower
  * @param {Creep} thingToAttack
  */
-const attackWithTower = (tower, thingToAttack) => {
+const attackWithTower = (tower: StructureTower, thingToAttack: Creep) => {
   tower.attack(thingToAttack);
 };
 
@@ -24,7 +24,7 @@ const attackWithTower = (tower, thingToAttack) => {
  * @param {Array<StructureTower} towers
  * @param {Structure} thingToRepair
  */
-const repairWithAllTowers = (towers, thingToRepair) => {
+const repairWithAllTowers = (towers: Array<StructureTower>, thingToRepair: Structure) => {
   towers.forEach(tower => repairWithTower(tower, thingToRepair));
 };
 
@@ -33,11 +33,11 @@ const repairWithAllTowers = (towers, thingToRepair) => {
  * @param {StructureTower} tower
  * @param {Structure} thingToRepair
  */
-const repairWithTower = (tower, thingToRepair) => {
+const repairWithTower = (tower: StructureTower, thingToRepair: Structure) => {
   const result = tower.repair(thingToRepair);
   if (result !== OK) {
     let status = "bad";
-    switch (status) {
+    switch (result) {
       case -1:
         status = "ERR_NOT_OWNER";
         break;
@@ -63,10 +63,10 @@ const repairWithTower = (tower, thingToRepair) => {
  *
  * @param {Room} room
  */
-const run = room => {
+const run = (room: Room) => {
   const towers = room.find(FIND_MY_STRUCTURES, {
     filter: structure => structure.structureType === STRUCTURE_TOWER
-  });
+  }).map(structure => structure as StructureTower);
   const enemies = enemyLocator.findEnemies(room);
   if (enemies && enemies.length > 0) {
     attackWithAllTowers(towers, enemies[0]);

@@ -1,13 +1,13 @@
-const creepMover = require("../nav/pathfinder");
+import * as creepMover from "../nav/pathfinder";
 
-const constructTarget = (creep, target) => {
+export const constructTarget = (creep: Creep, target: ConstructionSite<BuildableStructureConstant>) => {
   if (creep.build(target) == ERR_NOT_IN_RANGE) {
     console.log("Creep " + creep.name + " moving to " + target.structureType + ":" + target.id);
-    creepMover.moveCreepTo(creep, target);
+    creepMover.moveCreepTo(creep, target.pos);
   }
 };
 
-const findNearestThingToRepair = creep => {
+export const findNearestThingToRepair = (creep: Creep) => {
   return creep.pos.findClosestByPath(FIND_STRUCTURES, {
     filter: object => {
       return (
@@ -19,21 +19,14 @@ const findNearestThingToRepair = creep => {
   });
 };
 
-const repairThing = (creep, toRepair) => {
+export const repairThing = (creep: Creep, toRepair: Structure) => {
   if (toRepair) {
     creep.say("fixing");
-    creepMover.moveCreepTo(creep, toRepair);
+    creepMover.moveCreepTo(creep, toRepair.pos);
     creep.repair(toRepair);
   }
 };
 
-const findNearestConstructionSite = creep => {
+export const findNearestConstructionSite = (creep: Creep) => {
   return creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-};
-
-module.exports = {
-  findNearestConstructionSite,
-  constructTarget,
-  findNearestThingToRepair,
-  repairThing
 };

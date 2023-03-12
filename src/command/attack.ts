@@ -1,27 +1,25 @@
 import * as spawner from '../spawn/spawner';
 import * as partsConfig from "../spawn/parts-config";
+import BaseCommand from "./basecommand";
 
-const run = ({ action, from, to, squad, squadRoles }:
-               { action: Action, from: string, squad: string, to: string, squadRoles: Array<string>}) => {
-  console.log("prioritizing " + to);
-  squadRoles
-    .map(role => {
-      return {
-        body: partsConfig.getParts(role, from),
-        name: `${from}${squad}${role}${Game.time}`,
-        options: {
-          memory: {
-            role: role,
-            action: action,
-            home: from,
-            target: to
+export default class AttackCommand extends BaseCommand {
+  run(commandConfig: CommandConfig): void {
+    console.log("prioritizing " + commandConfig.to);
+    commandConfig.squadRoles
+      .map(role => {
+        return {
+          body: partsConfig.getParts(role, commandConfig.from),
+          name: `${(commandConfig.from)}${(commandConfig.squad)}${role}${Game.time}`,
+          options: {
+            memory: {
+              role: role,
+              action: commandConfig.action,
+              home: commandConfig.from,
+              target: commandConfig.to
+            }
           }
-        }
-      };
-    })
-    .map(creepConfig => spawner.prioritize(from, creepConfig));
-};
-
-module.exports = {
-  run
-};
+        };
+      })
+      .map(creepConfig => spawner.prioritize(commandConfig.from, creepConfig));
+  }
+}

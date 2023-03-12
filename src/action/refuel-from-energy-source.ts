@@ -1,14 +1,14 @@
-const creepNavigator = require("../nav/pathfinder");
+import * as creepNavigator from "../nav/pathfinder";
 
-const findNearestEnergySource = creep => {
+export const findNearestEnergySource = (creep: Creep) => {
   return creep.pos.findClosestByPath(FIND_SOURCES);
 };
 
-const findFirstEnergySource = creep => {
+export const findFirstEnergySource = (creep: Creep) => {
   return creep.room.find(FIND_SOURCES_ACTIVE);
 };
 
-const getEnergySource = creep => {
+export const getEnergySource = (creep: Creep) => {
   if (creep.memory.energySource) {
     return creep.room.find(FIND_SOURCES, {
       filter: source => {
@@ -19,21 +19,18 @@ const getEnergySource = creep => {
 
   console.log("ERROR, creep couldn't find it's assigned energy source and will default to nearest.");
   const source = findNearestEnergySource(creep);
-  creep.memory.energySource = source.id;
+  creep.memory.energySource = source?.id;
   return source;
 };
 
-const run = creep => {
+export const run = (creep: Creep) => {
   creep.say("🔄 harvest");
 
-  // const source = findNearestEnergySource(creep);
   const source = getEnergySource(creep);
-  const harvestResult = creep.harvest(source);
-  if (harvestResult == ERR_NOT_IN_RANGE) {
-    creepNavigator.moveCreepTo(creep, source);
+  if (source) {
+    const harvestResult = creep.harvest(source);
+    if (harvestResult == ERR_NOT_IN_RANGE) {
+      creepNavigator.moveCreepTo(creep, source.pos);
+    }
   }
-};
-
-module.exports = {
-  run
 };

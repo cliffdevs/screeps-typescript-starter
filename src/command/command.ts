@@ -1,21 +1,30 @@
-import * as attack from './attack';
+import AttackCommand from './attack';
+import ClaimCommand from './claim';
+import RecoverCommand from './recover';
+import StartupCommand from "./startup";
+import BaseCommand from "./basecommand";
+
+interface FlagCommand {
+  flagName: string;
+  flag: Flag;
+}
 
 // find command flags and interpret the outcome
-const actions = {
-  attack,
-  claim: require("./claim"),
-  recover: require("./recover"),
-  startup: require("./startup")
+const actions: Record<string, BaseCommand> = {
+  attack: new AttackCommand(),
+  claim: new ClaimCommand(),
+  recover: new RecoverCommand(),
+  startup: new StartupCommand()
 };
 
 // Expect flags named like this: command.attack.from.E41N41.SquadNameHere.attacker.attacker
 // the name must start with command, the next section is the action: attack/seige/claim/defend
-const convertFlagToCommand = ([flagName, flag]) => {
-  const commandComponents = flag.name.split(".");
-  const commandDetails = {
+const convertFlagToCommand = (flagCommandOptions: FlagCommand) => {
+  const commandComponents = flagCommandOptions.flag.name.split(".");
+  const commandDetails: CommandConfig = {
     action: commandComponents[1],
     from: commandComponents[3],
-    to: flagName,
+    to: flagCommandOptions.flagName,
     squad: commandComponents[4],
     squadRoles: commandComponents.slice(5, commandComponents.length)
   };
@@ -28,6 +37,9 @@ const discoverCommands = () => {
   console.log("Discovering commands...");
   const commands = Object.entries(Game.flags)
     .filter(([_flagName, flag]) => !flag.memory.flagAcknowledged)
+    .map(([flagName, flag]) => {
+      return { flagName, flag };
+    })
     .map(convertFlagToCommand);
 
   console.log("Found " + commands.length + " new commands.");

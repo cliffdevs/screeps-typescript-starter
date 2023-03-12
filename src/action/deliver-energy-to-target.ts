@@ -1,6 +1,6 @@
-const creepNavigator = require("../nav/pathfinder");
+import * as creepNavigator from "../nav/pathfinder";
 
-const deliverEnergyToTarget = (creep, target) => {
+export const deliverEnergyToTarget = (creep: Creep, target: any) => {
   creep.say("🔄 delivering energy");
 
   const name = target.name || target.id;
@@ -14,5 +14,3 @@ const deliverEnergyToTarget = (creep, target) => {
     console.log("Unable to transfer because error " + transferResult);
   }
 };
-
-module.exports = deliverEnergyToTarget;

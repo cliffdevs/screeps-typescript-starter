@@ -1,17 +1,17 @@
-const visualCostMatrix = room => {
+const visualCostMatrix = (room: string) => {
   //todo read and set color weights
 };
 
-const getColor = creep => {
+const getColor = (creep: Creep) => {
   if (!creep.memory.path_color) {
     creep.memory.path_color = "#" + Math.floor(Math.random() * 16777215).toString(16);
   }
   return creep.memory.path_color;
 };
 
-const roomCallback = roomName => {
+const roomCallback = (roomName: string): boolean | CostMatrix => {
   let room = Game.rooms[roomName];
-  if (!room) return;
+  if (!room) return false;
 
   let costs = new PathFinder.CostMatrix();
 
@@ -48,30 +48,26 @@ const roomCallback = roomName => {
   return costs;
 };
 
-const PATH_OPTIONS = {
+const PATH_OPTIONS: PathFinderOpts = {
   plainCost: 2,
   swampCost: 10,
   // heuristicWeight: 1.9,
   roomCallback: roomCallback
 };
 
-const drawPath = (creep, path) => {
+const drawPath = (creep: Creep, path: Array<RoomPosition>) => {
   creep.room.visual.poly(path, { stroke: getColor(creep), strokeWidth: 0.3, opacity: 0.5, lineStyle: "dashed" });
 };
 
-const moveCreepTo = (creep, target) => {
+export const moveCreepTo = (creep: Creep, target: RoomPosition) => {
   const path = PathFinder.search(creep.pos, target, PATH_OPTIONS).path;
   drawPath(creep, path);
   const moveResult = creep.moveByPath(path);
 
   if (!(OK === moveResult || ERR_TIRED === moveResult)) {
-    creep.say(moveResult);
+    creep.say(`${moveResult}`);
     console.log(creep.name + " unable to move to target errorCode: " + moveResult);
   }
 
   return moveResult;
-};
-
-module.exports = {
-  moveCreepTo
 };

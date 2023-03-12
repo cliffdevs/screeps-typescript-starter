@@ -1,10 +1,10 @@
-const buildActions = require("./find-nearest-construction");
-const deliverEnergyToTarget = require("./deliver-energy-to-target");
-const locateNearestTowerNeedingFuel = require("./locate-nearest-tower-needing-fuel");
-const creepNavigator = require("../nav/pathfinder");
+import * as  buildActions from "./find-nearest-construction";
+import {deliverEnergyToTarget} from "./deliver-energy-to-target";
+import {locateNearestTowerNeedingFuel} from "./locate-nearest-tower-needing-fuel";
+import * as creepNavigator from "../nav/pathfinder";
 
-const dumpExcessEnergy = creep => {
-  if (creep.room.name === Game.spawns[creep.memory.spawn].room.name) {
+export const dumpExcessEnergy = (creep: Creep) => {
+  if (creep.memory.spawn && creep.room.name === Game.spawns[creep.memory.spawn].room.name) {
     creep.say("excess");
     console.log(creep.name + " has excess energy");
     // build things first
@@ -16,7 +16,7 @@ const dumpExcessEnergy = creep => {
       const towerNeedingFuel = locateNearestTowerNeedingFuel(creep);
       if (towerNeedingFuel) {
         deliverEnergyToTarget(creep, towerNeedingFuel);
-      } else if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+      } else if (creep.room.controller && creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
         creepNavigator.moveCreepTo(creep, creep.room.controller.pos);
       }
     }
@@ -29,9 +29,7 @@ const dumpExcessEnergy = creep => {
       creep.memory.spawn ||
       creep.room.find(FIND_STRUCTURES, {
         filter: structure => structure.structureType === STRUCTURE_SPAWN
-      })[0].name;
+      }).map(structure => structure as StructureSpawn)[0].name;
     creep.moveTo(Game.spawns[spawnName]);
   }
 };
-
-module.exports = dumpExcessEnergy;

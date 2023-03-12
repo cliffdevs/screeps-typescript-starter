@@ -2,10 +2,6 @@
  *
  * @param {Room} room
  */
-const findEnemies = room => {
+export const findEnemies = (room: Room) => {
   return room.find(FIND_HOSTILE_CREEPS);
-};
-
-module.exports = {
-  findEnemies
 };

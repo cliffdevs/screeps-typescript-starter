@@ -3,7 +3,7 @@
  * @param {Room} room
  * @returns {Array<Structure>}
  */
-const findThingsToRepair = room => {
+export const findThingsToRepair = (room: Room) => {
   const MIN_WALL_HEALTH = 5000;
   return room.find(FIND_STRUCTURES, {
     filter: object => {
@@ -22,7 +22,7 @@ const findThingsToRepair = room => {
  * @param {Room} room
  * @returns {Array<Structure>}
  */
-const findThingsToBuild = room => {
+export const findThingsToBuild = (room: Room) => {
   return room.find(FIND_CONSTRUCTION_SITES);
 };
 
@@ -31,7 +31,7 @@ const findThingsToBuild = room => {
  * @param {Creep} creep
  * @returns {Array<Structure>}
  */
-const findEnergyStorageLocations = creep => {
+export const findEnergyStorageLocations = (creep: Creep) => {
   const storageLocations = creep.room
     .find(FIND_STRUCTURES, {
       filter: structure => {
@@ -58,7 +58,7 @@ const findEnergyStorageLocations = creep => {
   return storageLocations;
 };
 
-const findClosestEnergyStorage = creep => {
+export const findClosestEnergyStorage = (creep: Creep) => {
   return creep.pos.findClosestByPath(FIND_STRUCTURES, {
     filter: structure => {
       return (
@@ -70,11 +70,4 @@ const findClosestEnergyStorage = creep => {
       );
     }
   });
-};
-
-module.exports = {
-  findClosestEnergyStorage,
-  findEnergyStorageLocations,
-  findThingsToBuild,
-  findThingsToRepair
 };

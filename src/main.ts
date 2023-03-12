@@ -21,6 +21,9 @@ declare global {
     room: string;
     working?: boolean;
     spawn?: string;
+    path_color?: string;
+    delivering?: boolean;
+    energySource?: string;
   }
 
   interface RoomMemory {
@@ -51,8 +54,16 @@ declare global {
     options: any;
   }
 
-  interface Action {
-    run: () => void;
+  interface CommandConfig {
+    action: string;
+    from: string;
+    to: string;
+    squad: string;
+    squadRoles: Array<string>;
+  }
+
+  interface Command {
+    run: (commandConfig: CommandConfig) => void;
   }
 
   // Syntax for adding properties to `global` (ex "global.log")
