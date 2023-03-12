@@ -3,7 +3,7 @@
 /**
  * Utility for reclaiming memory.
  */
-class MemoryCleaner {
+export default class MemoryCleaner {
   constructor() {}
 
   /**
@@ -17,5 +17,3 @@ class MemoryCleaner {
     }
   }
 }
-
-module.exports = MemoryCleaner;

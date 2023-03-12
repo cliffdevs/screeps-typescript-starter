@@ -1,14 +1,10 @@
 // refuelers are tower specific couriers
-const { deliverEnergyToTarget } = require("../action/transfer-energy");
+import { deliverEnergyToTarget } from "../action/transfer-energy";
 const locateNearestTowerNeedingFuel = require("../action/locate-nearest-tower-needing-fuel");
 
-const run = creep => {
+export const run = (creep: Creep) => {
   const towerNeedingFuel = locateNearestTowerNeedingFuel(creep);
   if (towerNeedingFuel) {
-    deliverEnergyToTarget(creep, target);
+    deliverEnergyToTarget(creep, towerNeedingFuel.pos);
   }
-};
-
-module.exports = {
-  run
 };

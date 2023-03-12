@@ -8,9 +8,10 @@
  *
  * @param {Creep} creep
  */
-const run = creep => {
-  const flag = Game.flags[creep.memory.target];
-  if (flag) {
+export const run = (creep: Creep) => {
+  const target = creep.memory.target;
+  if (target) {
+    const flag = Game.flags[target];
     if (creep) {
       Memory.rooms = Memory.rooms ? Memory.rooms : {};
       Memory.rooms[flag.pos.roomName] = Memory.rooms[flag.pos.roomName] ? Memory.rooms[flag.pos.roomName] : {};
@@ -18,7 +19,7 @@ const run = creep => {
       if (creep.room.name === flag.pos.roomName) {
         const controller = Game.rooms[flag.pos.roomName].find(FIND_STRUCTURES, {
           filter: struct => struct.structureType === STRUCTURE_CONTROLLER
-        })[0];
+        }).map(structure => structure as StructureController)[0];
         creep.say("attack!");
         const result = creep.attackController(controller);
         if (result == ERR_NOT_IN_RANGE) {
@@ -42,7 +43,4 @@ const run = creep => {
       }
     }
   }
-};
-module.exports = {
-  run
 };

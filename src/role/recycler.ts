@@ -1,12 +1,12 @@
 // recyclers are suicidal bots that turn themselves in for energy when their mission is complete
-const nav = require("../nav/pathfinder");
-const dumpExcessEnergy = require("../action/dump-excess-energy");
+import * as nav from "../nav/pathfinder";
+import {dumpExcessEnergy} from "../action/dump-excess-energy";
 
-const creepHasEnergy = creep => {
+const creepHasEnergy = (creep: Creep) => {
   return creep.store.getUsedCapacity(RESOURCE_ENERGY) > 0;
 };
 
-const recycleCreep = creep => {
+const recycleCreep = (creep: Creep) => {
   creep.say("Kill me");
   const recycleResult = Game.spawns["Spawn1"].recycleCreep(creep);
   if (recycleResult == ERR_NOT_IN_RANGE) {
@@ -17,14 +17,10 @@ const recycleCreep = creep => {
   }
 };
 
-const run = creep => {
+export const run = (creep: Creep) => {
   if (creepHasEnergy(creep)) {
     dumpExcessEnergy(creep);
   } else {
     recycleCreep(creep);
   }
-};
-
-module.exports = {
-  run
 };

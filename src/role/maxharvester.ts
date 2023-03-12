@@ -1,9 +1,9 @@
 // maxharvesters are drop miners, they require couriers to be effective
-const mineRefueler = require("../action/refuel-from-energy-source");
+import * as mineRefueler from "../action/refuel-from-energy-source";
 
-const roleMaxHarvester = {
+export const roleMaxHarvester = {
   /** @param {Creep} creep **/
-  run: function(creep) {
+  run: function(creep: Creep) {
     if (creep.store.getFreeCapacity() > 0) {
       mineRefueler.run(creep);
     } else {
@@ -11,5 +11,3 @@ const roleMaxHarvester = {
     }
   }
 };
-
-module.exports = roleMaxHarvester;

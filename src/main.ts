@@ -1,4 +1,6 @@
 import { ErrorMapper } from "utils/ErrorMapper";
+import Brain from "./Brain";
+import MemoryCleaner from "./utils/MemoryCleaner"
 
 declare global {
   /*
@@ -24,6 +26,9 @@ declare global {
     path_color?: string;
     delivering?: boolean;
     energySource?: string;
+    target?: string;
+    building?: boolean;
+    upgrading?: boolean;
   }
 
   interface RoomMemory {
@@ -33,6 +38,9 @@ declare global {
     previousSourceIndex?: number;
     spawners?: Array<string>;
     spawnerIndex?: number;
+    attackers?: Array<string>;
+    claimer?: string;
+    miners?: Array<string>;
   }
 
   interface FlagMemory {
@@ -74,15 +82,11 @@ declare global {
   }
 }
 
+const brain = new Brain(new MemoryCleaner());
+
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(() => {
   console.log(`tick=${Game.time}`);
-
-  // Automatically delete memory of missing creeps
-  for (const name in Memory.creeps) {
-    if (!(name in Game.creeps)) {
-      delete Memory.creeps[name];
-    }
-  }
+  brain.loop();
 });

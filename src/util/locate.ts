@@ -69,5 +69,5 @@ export const findClosestEnergyStorage = (creep: Creep) => {
         structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
       );
     }
-  });
+  }) as StructureExtension | StructureSpawn | StructureStorage | StructureContainer;
 };

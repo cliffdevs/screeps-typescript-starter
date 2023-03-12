@@ -1,21 +1,20 @@
 /**
  * Builder is a role that will work on construction sites or repair damaged structures.
  */
-
-const creepMover = require("../nav/pathfinder");
-const containerRefueler = require("../action/refuel-from-container");
-const mineRefueler = require("../action/refuel-from-energy-source");
+import * as creepMover from "../nav/pathfinder";
+import * as containerRefueler from "../action/refuel-from-container";
+import * as mineRefueler from "../action/refuel-from-energy-source";
 
 const MIN_WALL_HEALTH = 5000;
 
-const constructTarget = (creep, target) => {
+const constructTarget = (creep: Creep, target: ConstructionSite) => {
   if (creep.build(target) == ERR_NOT_IN_RANGE) {
     console.log("Creep " + creep.name + " moving to " + target.structureType + ":" + target.id);
-    creepMover.moveCreepTo(creep, target);
+    creepMover.moveCreepTo(creep, target.pos);
   }
 };
 
-const findNearestThingToRepair = creep => {
+const findNearestThingToRepair = (creep: Creep) => {
   return creep.pos.findClosestByPath(FIND_STRUCTURES, {
     filter: object => {
       return (
@@ -28,21 +27,21 @@ const findNearestThingToRepair = creep => {
   });
 };
 
-const repairThing = (creep, toRepair) => {
+const repairThing = (creep: Creep, toRepair: Structure) => {
   if (toRepair) {
     creep.say("fixing");
-    creepMover.moveCreepTo(creep, toRepair);
+    creepMover.moveCreepTo(creep, toRepair.pos);
     creep.repair(toRepair);
   }
 };
 
-const findNearestConstructionSite = creep => {
+const findNearestConstructionSite = (creep: Creep) => {
   return creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
 };
 
-const roleBuilder = {
+export const roleBuilder = {
   /** @param {Creep} creep **/
-  run: function(creep) {
+  run: function(creep: Creep) {
     if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
       creep.memory.building = false;
       creep.say("🔄 harvest");
@@ -67,7 +66,7 @@ const roleBuilder = {
         if (toRepair) {
           creep.say("repair");
           repairThing(creep, toRepair);
-        } else if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+        } else if (creep.room.controller && creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
           creep.say("upgrade");
           creepMover.moveCreepTo(creep, creep.room.controller.pos);
         }
@@ -75,5 +74,3 @@ const roleBuilder = {
     }
   }
 };
-
-module.exports = roleBuilder;

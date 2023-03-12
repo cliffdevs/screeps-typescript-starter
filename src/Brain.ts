@@ -1,5 +1,7 @@
 "use strict";
 // apply prototypes
+import MemoryCleaner from "./utils/MemoryCleaner";
+
 require("./prototype")
 
 const commandExecutor = require("./command/command");
@@ -7,7 +9,7 @@ const commandExecutor = require("./command/command");
 /**
  * All AI logic starts here.
  */
-class Brain {
+export default class Brain {
 
   private memoryCleaner: MemoryCleaner;
 
@@ -52,5 +54,3 @@ class Brain {
     }
   }
 }
-
-module.exports = Brain;

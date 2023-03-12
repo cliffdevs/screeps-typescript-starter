@@ -4,24 +4,24 @@
  * They combo well with drop mining strategies.
  */
 
-const nav = require("../nav/pathfinder");
-const locationUtils = require("../util/locate");
+import * as nav from "../nav/pathfinder";
+import * as locationUtils from "../util/locate";
 
 /**
  *
  * @param {Creep} creep
  * @param {Structure} target
  */
-const deliverEnergyToTarget = (creep, target) => {
+const deliverEnergyToTarget = (creep: Creep, target:  StructureExtension | StructureSpawn | StructureStorage | StructureContainer) => {
   creep.say("🔄 delivering energy");
 
-  const name = target.name || target.id;
+  const name = target.id;
   console.log("Transferring energy to " + target.structureType + ":" + name);
 
   const transferResult = creep.transfer(target, RESOURCE_ENERGY);
 
   if (transferResult == ERR_NOT_IN_RANGE) {
-    nav.moveCreepTo(creep, target);
+    nav.moveCreepTo(creep, target.pos);
   } else if (transferResult !== OK) {
     console.log("Unable to transfer because error " + transferResult);
   }
@@ -31,13 +31,13 @@ const deliverEnergyToTarget = (creep, target) => {
  *
  * @param {Creep} creep
  */
-const findAndPickupDroppedEnergy = creep => {
+const findAndPickupDroppedEnergy = (creep: Creep) => {
   const foundEnergy = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
   if (foundEnergy) {
     // creep.say("pickup");
     const pickupResult = creep.pickup(foundEnergy);
     if (pickupResult == ERR_NOT_IN_RANGE) {
-      nav.moveCreepTo(creep, foundEnergy);
+      nav.moveCreepTo(creep, foundEnergy.pos);
     } else if (pickupResult != OK) {
       creep.say("err" + pickupResult);
     }
@@ -50,17 +50,7 @@ const findAndPickupDroppedEnergy = creep => {
  *
  * @param {Creep} creep
  */
-const carryEnergyToStorage = creep => {
-  // const targets = locationUtils.findEnergyStorageLocations(creep);
-  // if (targets.length > 0) {
-  //   creep.say("deliver");
-  //   deliverEnergyToTarget(creep, targets[0]);
-
-  //   // // if empty
-  //   if (creep.store.getFreeCapacity() === creep.store.getCapacity()) {
-  //     creep.memory.delivering = false;
-  //   }
-  // }
+const carryEnergyToStorage = (creep: Creep) => {
 
   const target = locationUtils.findClosestEnergyStorage(creep);
   if (target) {
@@ -79,15 +69,11 @@ const carryEnergyToStorage = creep => {
  *
  * @param {Creep} creep
  */
-const run = creep => {
+export const run = (creep: Creep) => {
   if (!creep.memory.delivering && creep.store.getFreeCapacity() > 0) {
     findAndPickupDroppedEnergy(creep);
   } else {
     creep.memory.delivering = true;
     carryEnergyToStorage(creep);
   }
-};
-
-module.exports = {
-  run
 };
