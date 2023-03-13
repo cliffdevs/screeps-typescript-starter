@@ -1,5 +1,3 @@
-import {spawn} from "child_process";
-
 import spawnConfig from "./spawn-config";
 import * as partsConfig from "./parts-config";
 import * as spawnSelector from "./spawn-selector";
@@ -112,6 +110,8 @@ const attemptToSpawn = (roomName: string) => {
             align: "left",
             opacity: 0.8
           });
+
+          spawnSelector.incrementSpawner(roomName);
         }
       }
     }
