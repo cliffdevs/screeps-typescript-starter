@@ -2,6 +2,8 @@
  * Claimer's will claim a room controller.
  */
 
+import { room } from "prototype";
+
 // const creepMover = require("../nav/pathfinder");
 
 /**
@@ -36,6 +38,12 @@ export const run = (creep: Creep) => {
         } else if (result == OK) {
           creep.say("success");
           console.log("ATTACK SUCCEEDED");
+          if (creep.room.find(FIND_MY_STRUCTURES, {
+            filter: structure => structure.structureType === STRUCTURE_CONTROLLER
+          }).length > 0) {
+            // recycle creep after completing its mission of claiming this controller
+            creep.memory.role = "recycler";
+          }
         }
       } else {
         creep.say("deploy");
