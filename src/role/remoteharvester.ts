@@ -15,7 +15,7 @@ export const run = (creep: Creep) => {
     const roomName = flag?.pos.roomName ?? creep.memory.target;
 
     if (creep.room.name === roomName) {
-      creep.memory.role = "builder";
+      creep.memory.role = "harvester";
     } else {
       creep.say(flag.name);
       creep.moveTo(flag.pos);
