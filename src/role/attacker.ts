@@ -2,11 +2,14 @@
  * Attacker is a role for creeps to go out and fight for objects in rooms.
  */
 
+import { queueSuccessor } from "action/queue-successor";
+
 /**
  * execute the attack logic.
  * @param {Creep} creep
  */
 export const run = (creep: Creep) => {
+  queueSuccessor(creep);
   const creepTarget = creep.memory.target;
   if (creepTarget) {
     const flag = Game.flags[creepTarget];

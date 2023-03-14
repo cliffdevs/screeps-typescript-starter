@@ -19,7 +19,7 @@ const actions: Record<string, BaseCommand> = {
 
 // Expect flags named like this: command.attack.from.E41N41.SquadNameHere.attacker.attacker
 // the name must start with command, the next section is the action: attack/seige/claim/defend
-const convertFlagToCommand = (flagCommandOptions: FlagCommand) => {
+export const convertFlagToCommand = (flagCommandOptions: FlagCommand) => {
   const commandComponents = flagCommandOptions.flag.name.split(".");
   const commandDetails: CommandConfig = {
     action: commandComponents[1],
@@ -56,3 +56,7 @@ export const run = () => {
     })
     .map(command => (Memory.flags[command.to].flagAcknowledged = true));
 };
+
+export const executeSuccessorCommand = (command: CommandConfig) => {
+  actions[command.action].run(command);
+}

@@ -71,3 +71,21 @@ export const moveCreepTo = (creep: Creep, target: RoomPosition) => {
 
   return moveResult;
 };
+
+/**
+ *
+ * @param creep The creep to move. It should have a target in mind, like a flag in memory.
+ * @returns false if moving, true if it is in the same room
+ */
+export const moveToTargetRoom = (creep: Creep) => {
+  const target = creep.memory.target;
+  if (target) {
+    const flag = Game.flags[target];
+    if (flag && creep.room.name !== flag.pos.roomName) {
+      creep.say("deploy");
+      creep.moveTo(flag);
+      return false;
+    }
+  }
+  return true;
+}

@@ -29,6 +29,7 @@ declare global {
     target?: string;
     building?: boolean;
     upgrading?: boolean;
+    successorRequested?: boolean;
   }
 
   interface RoomMemory {

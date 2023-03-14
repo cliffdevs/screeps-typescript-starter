@@ -4,6 +4,7 @@
 import * as creepMover from "../nav/pathfinder";
 import * as containerRefueler from "../action/refuel-from-container";
 import * as mineRefueler from "../action/refuel-from-energy-source";
+import { queueSuccessor } from "action/queue-successor";
 
 const MIN_WALL_HEALTH = 5000;
 
@@ -40,6 +41,11 @@ const findNearestConstructionSite = (creep: Creep) => {
 };
 
 export const run = (creep: Creep) => {
+    queueSuccessor(creep);
+    if (!creepMover.moveToTargetRoom(creep)) {
+      return;
+    }
+
     if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
       creep.memory.building = false;
       creep.say("🔄 harvest");
@@ -55,10 +61,10 @@ export const run = (creep: Creep) => {
       }
     }
     if (creep.memory.building) {
-      const target = findNearestConstructionSite(creep);
+      const constructionTarget = findNearestConstructionSite(creep);
 
-      if (target) {
-        constructTarget(creep, target);
+      if (constructionTarget) {
+        constructTarget(creep, constructionTarget);
       } else {
         const toRepair = findNearestThingToRepair(creep);
         if (toRepair) {

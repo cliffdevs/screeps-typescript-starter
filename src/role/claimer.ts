@@ -2,6 +2,7 @@
  * Claimer's will claim a room controller.
  */
 
+import { queueSuccessor } from "action/queue-successor";
 import { room } from "prototype";
 
 // const creepMover = require("../nav/pathfinder");
@@ -11,10 +12,11 @@ import { room } from "prototype";
  * @param {Creep} creep
  */
 export const run = (creep: Creep) => {
+  queueSuccessor(creep);
   const target = creep.memory.target;
   if (target) {
     const flag = Game.flags[target];
-    if (creep) {
+    if (flag) {
       Memory.rooms = Memory.rooms ? Memory.rooms : {};
       Memory.rooms[flag.pos.roomName] = Memory.rooms[flag.pos.roomName] ? Memory.rooms[flag.pos.roomName] : {};
       Memory.rooms[flag.pos.roomName].claimer = creep.name;
