@@ -53,6 +53,7 @@ import roleFunctions from "./role";
   });
 
   Room.prototype.execute = function () {
+    logger.setMdcValue("room", this.name);
     this.creeps.map(creep => {
       creep.execute();
     });
@@ -66,6 +67,7 @@ import roleFunctions from "./role";
       logger.log(`${this.name} is out of harvesters! Priorizing failsafe recovery.`);
       prioritizeHarvester(this.name);
     }
+    logger.clearMdcValue("room");
   };
 
 // creep
@@ -79,11 +81,14 @@ import roleFunctions from "./role";
   };
 
   Creep.prototype.execute = function () {
+    logger.setMdcValue("creep", this.name);
     setSpawnInMemory(this.name);
     const role = Memory.creeps[this.name].role || "builder";
-    logger.log("creep " + this.name + " role " + this.memory.role);
+    logger.setMdcValue("role", role);
     const roleFunction = roleFunctions[role];
     roleFunction.run(this);
+    logger.clearMdcValue("role");
+    logger.clearMdcValue("creep");
   };
 
 /**
@@ -133,5 +138,7 @@ export default class Brain {
     for (const roomName in Game.rooms) {
       Game.rooms[roomName].execute();
     }
+
+    logger.clearAllMdc();
   }
 }
