@@ -49,6 +49,7 @@ export const run = (creep: Creep) => {
     console.log("energy storage targets: " + targets.length);
     if (targets.length > 0) {
       creep.say("deliver");
+      console.log(`creepName=${creep.name} delivery targets.length=${targets.length} target=${JSON.stringify(targets[0], null, 2)}`)
       deliverEnergyToTarget(creep, targets[0]);
 
       // // if empty
