@@ -2,6 +2,7 @@ import * as creepMover from "../nav/pathfinder";
 import * as containerRefueler from "../action/refuel-from-container";
 import * as sourceRefueler from "../action/refuel-from-energy-source";
 import { deliverEnergyToTarget } from "../action/transfer-energy";
+import { queueSuccessor } from "action/queue-successor";
 
 /**
  * Return a single tower object if one exists needing energy
@@ -15,6 +16,7 @@ const locateNearestTowerNeedingFuel = (creep: Creep) => {
 };
 
 export const run = (creep: Creep) => {
+  queueSuccessor(creep);
   if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
     creep.memory.upgrading = false;
     creep.say("🔄 refuel");
