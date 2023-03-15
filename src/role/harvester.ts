@@ -5,6 +5,7 @@ import * as creepNavigator from "../nav/pathfinder";
 import * as mineRefueler from "../action/refuel-from-energy-source";
 import {deliverEnergyToTarget} from "../action/deliver-energy-to-target";
 import {dumpExcessEnergy} from "../action/dump-excess-energy";
+import * as logger from "../log/screeps-logger";
 
 const findEnergyStorageLocations = (creep: Creep) => {
   const storageLocations = creep.room
@@ -46,7 +47,7 @@ export const run = (creep: Creep) => {
     }
 
     const targets = findEnergyStorageLocations(creep);
-    console.log("energy storage targets: " + targets.length);
+    logger.log("energy storage targets: " + targets.length);
     if (targets.length > 0) {
       creep.say("deliver");
       console.log(`creepName=${creep.name} delivery targets.length=${targets.length} target=${JSON.stringify(targets[0], null, 2)}`)

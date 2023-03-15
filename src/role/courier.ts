@@ -6,6 +6,7 @@
 
 import * as nav from "../nav/pathfinder";
 import * as locationUtils from "../util/locate";
+import * as logger from "../log/screeps-logger";
 
 /**
  *
@@ -16,14 +17,14 @@ const deliverEnergyToTarget = (creep: Creep, target:  StructureExtension | Struc
   creep.say("🔄 delivering energy");
 
   const name = target.id;
-  console.log("Transferring energy to " + target.structureType + ":" + name);
+  logger.log("Transferring energy to " + target.structureType + ":" + name);
 
   const transferResult = creep.transfer(target, RESOURCE_ENERGY);
 
   if (transferResult == ERR_NOT_IN_RANGE) {
     nav.moveCreepTo(creep, target.pos);
   } else if (transferResult !== OK) {
-    console.log("Unable to transfer because error " + transferResult);
+    logger.log("Unable to transfer because error " + transferResult);
   }
 };
 

@@ -30,7 +30,7 @@ const prioritizeHarvester = (roomName: string) => {
         }
       }
     });
-    console.log(roomName + " prioritized a bootstrapper");
+    logger.log(roomName + " prioritized a bootstrapper");
   }
 };
 
@@ -56,7 +56,7 @@ Room.prototype.execute = function() {
     this.creeps.filter(creep => creep.memory.role === "harvester" || creep.memory.role === "remoteharvester").length ===
     0
   ) {
-    console.log(`${this.name} is out of harvesters! Priorizing failsafe recovery.`);
+    logger.log(`${this.name} is out of harvesters! Priorizing failsafe recovery.`);
     prioritizeHarvester(this.name);
   }
 };

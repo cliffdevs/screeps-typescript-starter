@@ -2,11 +2,12 @@ import * as  buildActions from "./find-nearest-construction";
 import {deliverEnergyToTarget} from "./deliver-energy-to-target";
 import {locateNearestTowerNeedingFuel} from "./locate-nearest-tower-needing-fuel";
 import * as creepNavigator from "../nav/pathfinder";
+import * as logger from "../log/screeps-logger";
 
 export const dumpExcessEnergy = (creep: Creep) => {
   if (creep.memory.spawn && creep.room.name === Game.spawns[creep.memory.spawn].room.name) {
     creep.say("excess");
-    console.log(creep.name + " has excess energy");
+    logger.log(creep.name + " has excess energy");
     // build things first
     const site = buildActions.findNearestConstructionSite(creep);
     if (site) {

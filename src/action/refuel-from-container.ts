@@ -1,4 +1,5 @@
 import * as creepNavigator from "../nav/pathfinder";
+import * as logger from "../log/screeps-logger";
 
 export const run = (creep: Creep) => {
   const sources = creep.room.find(FIND_STRUCTURES, {
@@ -13,7 +14,7 @@ export const run = (creep: Creep) => {
     }
     return true;
   } else {
-    console.log("Cannot find refuel sources");
+    logger.log("Cannot find refuel sources");
     creep.say("starving...");
     return false;
   }

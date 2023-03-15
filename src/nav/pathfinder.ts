@@ -1,3 +1,5 @@
+import * as logger from "../log/screeps-logger";
+
 const visualCostMatrix = (room: string) => {
   //todo read and set color weights
 };
@@ -66,7 +68,7 @@ export const moveCreepTo = (creep: Creep, target: RoomPosition) => {
 
   if (!(OK === moveResult || ERR_TIRED === moveResult)) {
     creep.say(`${moveResult}`);
-    console.log(creep.name + " unable to move to target errorCode: " + moveResult);
+    logger.log(creep.name + " unable to move to target errorCode: " + moveResult);
   }
 
   return moveResult;

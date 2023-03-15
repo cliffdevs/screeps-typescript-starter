@@ -3,6 +3,7 @@ import ClaimCommand from './claim';
 import RecoverCommand from './recover';
 import StartupCommand from "./startup";
 import BaseCommand from "./basecommand";
+import * as logger from "../log/screeps-logger";
 
 interface FlagCommand {
   flagName: string;
@@ -29,12 +30,12 @@ export const convertFlagToCommand = (flagCommandOptions: FlagCommand) => {
     squadRoles: commandComponents.slice(5, commandComponents.length)
   };
 
-  console.log(JSON.stringify(commandDetails));
+  logger.log(JSON.stringify(commandDetails));
   return commandDetails;
 };
 
 const discoverCommands = () => {
-  console.log("Discovering commands...");
+  logger.log("Discovering commands...");
   const commands = Object.entries(Game.flags)
     .filter(([_flagName, flag]) => !flag.memory.flagAcknowledged)
     .map(([flagName, flag]) => {
@@ -42,7 +43,7 @@ const discoverCommands = () => {
     })
     .map(convertFlagToCommand);
 
-  console.log("Found " + commands.length + " new commands.");
+  logger.log("Found " + commands.length + " new commands.");
 
   return commands;
 };

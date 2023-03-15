@@ -1,3 +1,5 @@
+import * as logger from "../log/screeps-logger";
+
 const getRoomMemory = (roomName: string) => {
   return (Memory.rooms[roomName] = Memory.rooms[roomName] || {});
 };
@@ -25,7 +27,7 @@ export const discoverSpawner = (roomName: string) => {
 
   if (spawners.length > 0) {
     const targetSpawnerIndex = getSpawnerIndex(roomName);
-    console.log("room: " + roomName + " spawner: " + spawners[targetSpawnerIndex]);
+    logger.log("room: " + roomName + " spawner: " + spawners[targetSpawnerIndex]);
     return Game.spawns[spawners[targetSpawnerIndex]];
   }
 

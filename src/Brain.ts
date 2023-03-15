@@ -1,6 +1,7 @@
 "use strict";
 import MemoryCleaner from "./utils/MemoryCleaner";
 import * as commandExecutor from "./command/command";
+import * as logger from "./log/screeps-logger";
 
 
 import * as spawner from "./spawn/spawner";
@@ -36,7 +37,7 @@ import roleFunctions from "./role";
           }
         }
       });
-      console.log(roomName + " prioritized a bootstrapper");
+      logger.log(roomName + " prioritized a bootstrapper");
     }
   };
 
@@ -62,7 +63,7 @@ import roleFunctions from "./role";
       this.creeps.filter(creep => creep.memory.role === "harvester" || creep.memory.role === "remoteharvester").length ===
       0
     ) {
-      console.log(`${this.name} is out of harvesters! Priorizing failsafe recovery.`);
+      logger.log(`${this.name} is out of harvesters! Priorizing failsafe recovery.`);
       prioritizeHarvester(this.name);
     }
   };
@@ -80,7 +81,7 @@ import roleFunctions from "./role";
   Creep.prototype.execute = function () {
     setSpawnInMemory(this.name);
     const role = Memory.creeps[this.name].role || "builder";
-    console.log("creep " + this.name + " role " + this.memory.role);
+    logger.log("creep " + this.name + " role " + this.memory.role);
     const roleFunction = roleFunctions[role];
     roleFunction.run(this);
   };
@@ -104,14 +105,14 @@ export default class Brain {
    * AI logic to be executed on each tick.
    */
   loop() {
-    console.log("inside brain loop")
+    logger.log("inside brain loop")
     const isCpuBelowLimit = function() {
       const gameTimeGreaterThanOneSecond = Game.time > 1000;
       const cpuBucketLessThanTwiceCpuTickLimit = Game.cpu.bucket < Game.cpu.tickLimit * 2;
       const cpuBucketLessThanTenTimesCpuLimit = Game.cpu.bucket < Game.cpu.limit * 10;
 
       if (gameTimeGreaterThanOneSecond && cpuBucketLessThanTwiceCpuTickLimit && cpuBucketLessThanTenTimesCpuLimit) {
-        console.log(
+        logger.log(
           `${Game.time} Skipping tick CPU Bucket too low. bucket: ${Game.cpu.bucket} tickLimit: ${Game.cpu.tickLimit} limit: ${Game.cpu.limit}`
         );
         return false;

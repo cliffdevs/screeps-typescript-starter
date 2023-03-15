@@ -5,12 +5,13 @@ import * as creepMover from "../nav/pathfinder";
 import * as containerRefueler from "../action/refuel-from-container";
 import * as mineRefueler from "../action/refuel-from-energy-source";
 import { queueSuccessor } from "action/queue-successor";
+import * as logger from "../log/screeps-logger";
 
 const MIN_WALL_HEALTH = 5000;
 
 const constructTarget = (creep: Creep, target: ConstructionSite) => {
   if (creep.build(target) == ERR_NOT_IN_RANGE) {
-    console.log("Creep " + creep.name + " moving to " + target.structureType + ":" + target.id);
+    logger.log("Creep " + creep.name + " moving to " + target.structureType + ":" + target.id);
     creepMover.moveCreepTo(creep, target.pos);
   }
 };

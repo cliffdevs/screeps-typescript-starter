@@ -1,5 +1,6 @@
 import * as enemyLocator from "./action/locate-nearest-enemy";
 import * as locationUtils from "./util/locate";
+import * as logger from "./log/screeps-logger";
 
 /**
  * Attack the same target with all towers.
@@ -53,7 +54,7 @@ const repairWithTower = (tower: StructureTower, thingToRepair: Structure) => {
       default:
         status = "UNKNOWN";
     }
-    console.log(
+    logger.log(
       `${tower.structureType}:${tower.id} unable to repair ${thingToRepair.structureType}:${thingToRepair.id}`
     );
   }

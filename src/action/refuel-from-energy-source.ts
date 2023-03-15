@@ -1,4 +1,5 @@
 import * as creepNavigator from "../nav/pathfinder";
+import * as logger from "../log/screeps-logger";
 
 export const findNearestEnergySource = (creep: Creep) => {
   return creep.pos.findClosestByPath(FIND_SOURCES);
@@ -17,7 +18,7 @@ export const getEnergySource = (creep: Creep) => {
     })[0];
   }
 
-  console.log("ERROR, creep couldn't find it's assigned energy source and will default to nearest.");
+  logger.log("ERROR, creep couldn't find it's assigned energy source and will default to nearest.");
   const source = findNearestEnergySource(creep);
   creep.memory.energySource = source?.id;
   return source;

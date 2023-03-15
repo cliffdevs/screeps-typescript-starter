@@ -3,6 +3,7 @@ import * as partsConfig from "./parts-config";
 import * as spawnSelector from "./spawn-selector";
 import allRoles from "../role/role-names";
 import * as spawnOpts from "./spawn-opts";
+import * as logger from "../log/screeps-logger";
 
 const getRoomMemory = (roomName: string) => {
   Memory.rooms = Memory.rooms || {};
@@ -71,14 +72,14 @@ const unshiftSpawnQueue = (roomName: string, creepConfig: CreepConfig) => {
 
 const queueSpawnsForRole = (role: string, roomName: string) => {
   const workers = _.filter(Game.creeps, creep => creep.memory.role === role);
-  console.log(`${role}'s: ` + workers.length);
+  logger.log(`${role}'s: ` + workers.length);
 
   const roomLevel = Game.rooms[roomName]?.controller?.level;
   if (roomLevel) {
-    console.log(`workers.length ${workers.length}`);
-    console.log(`roomName ${roomName} role ${role}`);
-    console.log(`pending ${getPendingCounterForRole(roomName, role)} `);
-    console.log(`config ${spawnConfig[roomLevel][role]}`);
+    logger.log(`workers.length ${workers.length}`);
+    logger.log(`roomName ${roomName} role ${role}`);
+    logger.log(`pending ${getPendingCounterForRole(roomName, role)} `);
+    logger.log(`config ${spawnConfig[roomLevel][role]}`);
     if (workers.length + getPendingCounterForRole(roomName, role) < spawnConfig[roomLevel][role]) {
       const newName = role + Game.time;
       const creepConfig: CreepConfig = {
@@ -86,7 +87,7 @@ const queueSpawnsForRole = (role: string, roomName: string) => {
         name: newName,
         options: spawnOpts.getSpawnOptions(roomName, role)
       };
-      console.log("Pushing creep to spawnqueue: " + JSON.stringify(creepConfig));
+      logger.log("Pushing creep to spawnqueue: " + JSON.stringify(creepConfig));
       pushSpawnQueue(roomName, creepConfig);
     }
   }
@@ -96,10 +97,10 @@ const attemptToSpawn = (roomName: string) => {
   const targetSpawner = spawnSelector.discoverSpawner(roomName);
   if (targetSpawner && !targetSpawner.spawning) {
     const creepConfig = peekSpawnQueue(roomName);
-    console.log(roomName + " will attempt to spawn creepConfig " + JSON.stringify(creepConfig));
+    logger.log(roomName + " will attempt to spawn creepConfig " + JSON.stringify(creepConfig));
     if (creepConfig) {
       const result = targetSpawner.spawnCreep(creepConfig.body, creepConfig.name, creepConfig.options);
-      console.log(roomName + " spawn result is " + result);
+      logger.log(roomName + " spawn result is " + result);
       if (result === OK) {
         popSpawnQueue(roomName);
         const spawnConfig = targetSpawner.spawning;

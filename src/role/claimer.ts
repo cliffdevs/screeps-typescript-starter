@@ -4,6 +4,7 @@
 
 import { queueSuccessor } from "action/queue-successor";
 import { room } from "prototype";
+import * as logger from "../log/screeps-logger";
 
 // const creepMover = require("../nav/pathfinder");
 
@@ -30,16 +31,16 @@ export const run = (creep: Creep) => {
           creep.say("close in");
           const moveResult = creep.moveTo(controller);
           if (moveResult != OK) {
-            console.log("attack move failed because " + moveResult);
+            logger.log("attack move failed because " + moveResult);
           }
         } else if (result == ERR_INVALID_TARGET) {
           creep.claimController(controller);
           creep.reserveController(controller);
         } else if (result != OK) {
-          console.log("attack controller failed because " + result);
+          logger.log("attack controller failed because " + result);
         } else if (result == OK) {
           creep.say("success");
-          console.log("ATTACK SUCCEEDED");
+          logger.log("ATTACK SUCCEEDED");
           if (creep.room.find(FIND_MY_STRUCTURES, {
             filter: structure => structure.structureType === STRUCTURE_CONTROLLER
           }).length > 0) {

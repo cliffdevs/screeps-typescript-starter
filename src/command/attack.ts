@@ -1,10 +1,11 @@
 import * as spawner from '../spawn/spawner';
 import * as partsConfig from "../spawn/parts-config";
 import BaseCommand from "./basecommand";
+import * as logger from "../log/screeps-logger";
 
 export default class AttackCommand extends BaseCommand {
   run(commandConfig: CommandConfig): void {
-    console.log("prioritizing " + commandConfig.to);
+    logger.log("prioritizing " + commandConfig.to);
     commandConfig.squadRoles
       .map(role => {
         return {

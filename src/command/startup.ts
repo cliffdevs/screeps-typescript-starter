@@ -1,9 +1,10 @@
 import * as spawner from "../spawn/spawner";
 import BaseCommand from "./basecommand";
+import * as logger from "../log/screeps-logger";
 
 export default class StartupCommand extends BaseCommand {
   run(commandOptions: CommandConfig): void {
-    console.log("prioritizing " + commandOptions.to);
+    logger.log("prioritizing " + commandOptions.to);
     commandOptions.squadRoles
       .map(role => {
         return {
