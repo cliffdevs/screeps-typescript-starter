@@ -4,6 +4,7 @@ import * as spawnSelector from "./spawn-selector";
 import allRoles from "../role/role-names";
 import * as spawnOpts from "./spawn-opts";
 import * as logger from "../log/screeps-logger";
+import { mapScreepsReturnCode } from "utils/resultcodemapper";
 
 const getRoomMemory = (roomName: string) => {
   Memory.rooms = Memory.rooms || {};
@@ -100,7 +101,7 @@ const attemptToSpawn = (roomName: string) => {
     logger.log(roomName + " will attempt to spawn creepConfig " + JSON.stringify(creepConfig));
     if (creepConfig) {
       const result = targetSpawner.spawnCreep(creepConfig.body, creepConfig.name, creepConfig.options);
-      logger.log(roomName + " spawn result is " + result);
+      logger.log(roomName + " spawn result is " + mapScreepsReturnCode(result));
       if (result === OK) {
         popSpawnQueue(roomName);
         const spawnConfig = targetSpawner.spawning;
