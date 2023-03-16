@@ -57,7 +57,7 @@ const popSpawnQueue = (roomName: string) => {
   return undefined;
 };
 
-const peekSpawnQueue = (roomName: string) => {
+const peekSpawnQueue = (roomName: string): CreepConfig | null => {
   const spawnQueue = getSpawnQueue(roomName);
   if (spawnQueue.length > 0) {
     return spawnQueue[0];
@@ -101,7 +101,20 @@ const attemptToSpawn = (roomName: string) => {
     logger.log(roomName + " will attempt to spawn creepConfig " + JSON.stringify(creepConfig));
     if (creepConfig) {
       const result = targetSpawner.spawnCreep(creepConfig.body, creepConfig.name, creepConfig.options);
+      const resultName = mapScreepsReturnCode(result);
       logger.log(roomName + " spawn result is " + mapScreepsReturnCode(result));
+      if (result === ERR_INVALID_ARGS) {
+        logger.log({
+          spawner: targetSpawner.name,
+          resultCode: result,
+          resultCodeName: resultName,
+          creepConfig
+        });
+        logger.log('Resetting spawn queue to clean bad data');
+        const roomMemory =  Game.rooms[targetSpawner.room.name].memory;
+        delete roomMemory.pendingSpawnCounters
+        delete roomMemory.spawnQueue;
+      }
       if (result === OK) {
         popSpawnQueue(roomName);
         const spawnConfig = targetSpawner.spawning;

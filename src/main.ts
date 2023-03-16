@@ -58,7 +58,7 @@ declare global {
   }
 
   interface CreepConfig {
-    body: any;
+    body: Array<BodyPartConstant>;
     name: string;
     options: any;
   }
