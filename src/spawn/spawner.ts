@@ -23,17 +23,20 @@ const getPendingCounterForRole = (roomName: string, role: string) => {
 };
 
 const increasePendingCounter = (roomName: string, creepConfig: CreepConfig) => {
-  const pendingSpawnCounters = getPendingSpawnCounters(roomName);
-  const role = creepConfig.options.memory.role;
-  const pendingSpawnCountersForRole = pendingSpawnCounters[role] ?? 0;
-  pendingSpawnCounters[role] = pendingSpawnCountersForRole + 1;
+  if (!(creepConfig.options as CreepMemory).target) {
+    const pendingSpawnCounters = getPendingSpawnCounters(roomName);
+    const role = creepConfig.options.memory.role;
+    const pendingSpawnCountersForRole = pendingSpawnCounters[role] ?? 0;
+    pendingSpawnCounters[role] = pendingSpawnCountersForRole + 1;
+  }
 };
 
 const decreasePendingCounter = (roomName: string, creepConfig: CreepConfig) => {
   const pendingSpawnCounters = getPendingSpawnCounters(roomName);
   const role = creepConfig.options.memory.role;
   const pendingSpawnCountersForRole = pendingSpawnCounters[role] ?? 1;
-  pendingSpawnCounters[role] = pendingSpawnCountersForRole - 1;
+  const calculateWithCounter = pendingSpawnCountersForRole > 0 ? pendingSpawnCountersForRole : 1;
+  pendingSpawnCounters[role] = calculateWithCounter - 1;
 };
 
 export const getSpawnQueue = (roomName: string) => {
@@ -50,7 +53,7 @@ const pushSpawnQueue = (roomName: string, creepConfig: CreepConfig) => {
 const popSpawnQueue = (roomName: string) => {
   const spawnQueue = getSpawnQueue(roomName);
   const creepConfig = spawnQueue.shift();
-  if (creepConfig) {
+  if (creepConfig && !(creepConfig.options as CreepMemory)?.target) {
     decreasePendingCounter(roomName, creepConfig);
     return creepConfig;
   }
