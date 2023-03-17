@@ -3,6 +3,7 @@
  */
 
 import { queueSuccessor } from "action/queue-successor";
+import { moveToTargetRoom } from "nav/pathfinder";
 
 /**
  * execute the attack logic.
@@ -10,6 +11,10 @@ import { queueSuccessor } from "action/queue-successor";
  */
 export const run = (creep: Creep) => {
   queueSuccessor(creep);
+  if (!moveToTargetRoom(creep)) {
+    return;
+  }
+
   const creepTarget = creep.memory.target;
   if (creepTarget) {
     const flag = Game.flags[creepTarget];

@@ -43,6 +43,7 @@ const findAndPickupDroppedEnergy = (creep: Creep) => {
       creep.say("err" + pickupResult);
     }
   } else {
+    logger.log("Unable to act");
     creep.say("bored");
   }
 };

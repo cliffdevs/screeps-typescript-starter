@@ -111,6 +111,7 @@ export default class Brain {
    */
   loop() {
     logger.log("inside brain loop")
+    const startTime = new Date().getMilliseconds();
     const isCpuBelowLimit = function() {
       const gameTimeGreaterThanOneSecond = Game.time > 1000;
       const cpuBucketLessThanTwiceCpuTickLimit = Game.cpu.bucket < Game.cpu.tickLimit * 2;
@@ -139,6 +140,7 @@ export default class Brain {
       Game.rooms[roomName].execute();
     }
 
+    logger.log({ loopDurationMs: new Date().getMilliseconds() - startTime });
     logger.clearAllMdc();
   }
 }

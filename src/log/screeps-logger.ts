@@ -5,6 +5,7 @@ let mdc: Record<string, string> = {};
 export const log = (message: any): void => {
     rawLog(JSON.stringify(Object.assign({}, mdc, {
         tick: Game.time,
+        shared: Game.shard.name,
         timestamp: new Date().toISOString(),
         message
     }, null, 2)));
