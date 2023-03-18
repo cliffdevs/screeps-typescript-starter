@@ -91,8 +91,12 @@ const queueSpawnsForRole = (role: string, roomName: string) => {
         name: newName,
         options: spawnOpts.getSpawnOptions(roomName, role)
       };
-      logger.log("Pushing creep to spawnqueue: " + JSON.stringify(creepConfig));
-      pushSpawnQueue(roomName, creepConfig);
+      if (creepConfig.body.length > 0) {
+        logger.log("Pushing creep to spawnqueue: " + JSON.stringify(creepConfig));
+        pushSpawnQueue(roomName, creepConfig);
+      } else {
+        logger.log(`UNABLE TO LOOKUP PART role=${role} roomName=${roomName}`);
+      }
     }
   }
 };
@@ -106,6 +110,18 @@ const attemptToSpawn = (roomName: string) => {
       const result = targetSpawner.spawnCreep(creepConfig.body, creepConfig.name, creepConfig.options);
       const resultName = mapScreepsReturnCode(result);
       logger.log(roomName + " spawn result is " + mapScreepsReturnCode(result));
+      if (result === ERR_NOT_ENOUGH_ENERGY && (creepConfig.options as CreepMemory).role) {
+        // double check that we haven't lost capacity to create this with the parts
+        const adjustedParts = partsConfig.getParts((creepConfig.options as CreepMemory).role, roomName);
+        if (adjustedParts.length > 0 && creepConfig.body != adjustedParts) {
+          logger.log("Parts for pending creep are different for this level, adjusting");
+          creepConfig.body = adjustedParts;
+          getSpawnQueue(roomName)[0] = creepConfig;
+        }
+      }
+      if (result === ERR_NAME_EXISTS) {
+        getSpawnQueue(roomName)[0].name += '0';
+      }
       if (result === ERR_INVALID_ARGS) {
         logger.log({
           spawner: targetSpawner.name,

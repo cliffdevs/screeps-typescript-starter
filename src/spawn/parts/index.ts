@@ -18,4 +18,4 @@ export default {
   refueler: refueler,
   remoteminer: remoteminer,
   upgrader: upgrader
-} as Record<string, any>;
+} as Record<string, { getParts: (roomName: string) => Array<BodyPartConstant> }>;

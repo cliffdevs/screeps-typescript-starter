@@ -20,6 +20,6 @@ const selectPartTier = (roomName: string) => {
   return energyTiers.filter(filterCurrentCapacityGreaterThan(capacity)).sort(sortHighestToLowest)[0];
 };
 
-export const getParts = (roomName: string) => {
+export const getParts = (roomName: string): Array<BodyPartConstant> => {
   return partTiers[selectPartTier(roomName)];
 };
