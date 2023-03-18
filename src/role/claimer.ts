@@ -5,6 +5,7 @@
 import { queueSuccessor } from "action/queue-successor";
 import { room } from "prototype";
 import * as logger from "../log/screeps-logger";
+import {moveCreepTo} from "../nav/pathfinder";
 
 // const creepMover = require("../nav/pathfinder");
 
@@ -29,7 +30,7 @@ export const run = (creep: Creep) => {
         const result = creep.attackController(controller);
         if (result == ERR_NOT_IN_RANGE) {
           creep.say("close in");
-          const moveResult = creep.moveTo(controller);
+          const moveResult = moveCreepTo(creep, controller.pos);
           if (moveResult != OK) {
             logger.log("attack move failed because " + moveResult);
           }
@@ -50,7 +51,7 @@ export const run = (creep: Creep) => {
         }
       } else {
         creep.say("deploy");
-        creep.moveTo(flag);
+        moveCreepTo(creep, flag.pos);
       }
     }
   }

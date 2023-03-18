@@ -2,6 +2,7 @@
 // const creepMover = require("../nav/pathfinder");
 
 import * as roleHavester from "./harvester";
+import {moveCreepTo} from "../nav/pathfinder";
 
 /**
  *
@@ -21,7 +22,7 @@ export const run = (creep: Creep) => {
         roleHavester.run(creep);
       } else {
         creep.say(flag.name);
-        creep.moveTo(flag.pos);
+        moveCreepTo(creep, flag.pos);
         // creepMover.moveCreepTo(creep, flag);
       }
     }

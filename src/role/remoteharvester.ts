@@ -3,6 +3,7 @@
  */
 import * as harvesterLogic from "./harvester";
 import * as dumpExcess from "../action/dump-excess-energy";
+import {moveCreepTo} from "../nav/pathfinder";
 
 /**
  * execute the attack logic.
@@ -18,7 +19,7 @@ export const run = (creep: Creep) => {
       creep.memory.role = "harvester";
     } else {
       creep.say(flag.name);
-      creep.moveTo(flag.pos);
+      moveCreepTo(creep, flag.pos);
     }
   }
 };

@@ -1,10 +1,6 @@
 import { mapScreepsReturnCode } from "utils/resultcodemapper";
 import * as logger from "../log/screeps-logger";
 
-const visualCostMatrix = (room: string) => {
-  //todo read and set color weights
-};
-
 const getColor = (creep: Creep) => {
   if (!creep.memory.path_color) {
     creep.memory.path_color = "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -63,13 +59,23 @@ const drawPath = (creep: Creep, path: Array<RoomPosition>) => {
 };
 
 export const moveCreepTo = (creep: Creep, target: RoomPosition) => {
-  const path = PathFinder.search(creep.pos, target, PATH_OPTIONS).path;
-  drawPath(creep, path);
-  const moveResult = creep.moveByPath(path);
+  // const path = PathFinder.search(creep.pos, target, PATH_OPTIONS).path;
+  // drawPath(creep, path);
+  // const moveResult = creep.moveByPath(path);
+  const moveResult = creep.moveTo(target, {
+    reusePath: 5,
+    visualizePathStyle: {
+      stroke: getColor(creep),
+      strokeWidth: 0.3,
+      opacity: 0.5,
+      lineStyle: "dashed"
+    }
+  });
 
   if (!(OK === moveResult || ERR_TIRED === moveResult)) {
-    creep.say(`${moveResult}`);
-    logger.log(creep.name + " unable to move to target errorCode: " + mapScreepsReturnCode(moveResult));
+    const returnMessage = mapScreepsReturnCode(moveResult);
+    creep.say(`${returnMessage}`);
+    logger.log(creep.name + " unable to move to target errorCode: " + returnMessage);
   }
 
   return moveResult;
@@ -86,7 +92,15 @@ export const moveToTargetRoom = (creep: Creep) => {
     const flag = Game.flags[target];
     if (flag && creep.room.name !== flag.pos.roomName) {
       creep.say("deploy");
-      creep.moveTo(flag);
+      creep.moveTo(flag.pos, {
+        reusePath: 5,
+        visualizePathStyle: {
+          stroke: getColor(creep),
+          strokeWidth: 0.3,
+          opacity: 0.5,
+          lineStyle: "dashed"
+        }
+      });
       return false;
     }
   }

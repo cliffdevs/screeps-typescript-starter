@@ -3,7 +3,7 @@
  */
 
 import { queueSuccessor } from "action/queue-successor";
-import { moveToTargetRoom } from "nav/pathfinder";
+import {moveCreepTo, moveToTargetRoom} from "nav/pathfinder";
 
 /**
  * execute the attack logic.
@@ -28,19 +28,19 @@ export const run = (creep: Creep) => {
       if (creep.room.name === flag.pos.roomName) {
         let spawnToStepOnAndDestroy = creep.pos.findClosestByPath(FIND_HOSTILE_CONSTRUCTION_SITES);
         if (spawnToStepOnAndDestroy) {
-          creep.moveTo(spawnToStepOnAndDestroy);
+          moveCreepTo(creep, spawnToStepOnAndDestroy.pos);
           return;
         }
         const closestHostileCreep = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS) as Creep;
         const outcome = creep.attack(closestHostileCreep);
         creep.say("smack");
         if (outcome == ERR_NOT_IN_RANGE) {
-          const moveResult = creep.moveTo(closestHostileCreep);
+          const moveResult = moveCreepTo(creep, closestHostileCreep.pos);
           creep.say(`${moveResult}`);
         }
       } else {
         creep.say(flag.name);
-        creep.moveTo(flag.pos);
+        moveCreepTo(creep, flag.pos);
       }
     }
   }
