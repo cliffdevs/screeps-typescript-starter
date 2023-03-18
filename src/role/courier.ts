@@ -43,8 +43,12 @@ const findAndPickupDroppedEnergy = (creep: Creep) => {
       creep.say("err" + pickupResult);
     }
   } else {
-    logger.log("Unable to act");
-    creep.say("bored");
+    if (creep.store.energy > 0) {
+      logger.log("Unable to find enough energy to fill store, delivering energy on hand");
+      creep.memory.delivering = true;
+    } else {
+      creep.say("bored");
+    }
   }
 };
 
