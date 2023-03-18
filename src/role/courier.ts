@@ -7,6 +7,7 @@
 import * as nav from "../nav/pathfinder";
 import * as locationUtils from "../util/locate";
 import * as logger from "../log/screeps-logger";
+import {dumpExcessEnergy} from "../action/dump-excess-energy";
 
 /**
  *
@@ -67,7 +68,7 @@ const carryEnergyToStorage = (creep: Creep) => {
       creep.memory.delivering = false;
     }
   } else {
-    creep.say("holding");
+    dumpExcessEnergy(creep);
   }
 };
 

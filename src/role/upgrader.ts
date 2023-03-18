@@ -3,6 +3,8 @@ import * as containerRefueler from "../action/refuel-from-container";
 import * as sourceRefueler from "../action/refuel-from-energy-source";
 import { deliverEnergyToTarget } from "../action/transfer-energy";
 import { queueSuccessor } from "action/queue-successor";
+import * as droppedRefueler from "../action/refuel-from-dropped-energy";
+import * as mineRefueler from "../action/refuel-from-energy-source";
 
 /**
  * Return a single tower object if one exists needing energy
@@ -35,8 +37,8 @@ export const run = (creep: Creep) => {
       creepMover.moveCreepTo(creep, creep.room.controller.pos);
     }
   } else {
-    if (!containerRefueler.run(creep)) {
-      sourceRefueler.run(creep);
+    if (!droppedRefueler.run(creep) || !containerRefueler.run(creep)) {
+      mineRefueler.run(creep);
     }
   }
 }

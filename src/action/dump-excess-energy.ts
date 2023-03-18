@@ -11,16 +11,19 @@ export const dumpExcessEnergy = (creep: Creep) => {
     logger.log(creep.name + " has excess energy");
     // build things first
     const site = buildActions.findNearestConstructionSite(creep);
-    if (site) {
+    if (site && creep.body.filter(value => value.type === WORK).length > 0) {
       creep.say("build");
       buildActions.constructTarget(creep, site);
-    } else {
+    } else if (!site) {
       const towerNeedingFuel = locateNearestTowerNeedingFuel(creep);
       if (towerNeedingFuel) {
         deliverEnergyToTarget(creep, towerNeedingFuel);
       } else if (creep.room.controller && creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
         creepNavigator.moveCreepTo(creep, creep.room.controller.pos);
       }
+    } else {
+      logger.log(`Dropping energy=${creep.store.getUsedCapacity(RESOURCE_ENERGY)} because can't find a use for it`);
+      creep.drop(RESOURCE_ENERGY);
     }
     // // if empty
     if (creep.store.getFreeCapacity() === creep.store.getCapacity()) {

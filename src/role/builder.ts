@@ -2,6 +2,7 @@
  * Builder is a role that will work on construction sites or repair damaged structures.
  */
 import * as creepMover from "../nav/pathfinder";
+import * as droppedRefueler from "../action/refuel-from-dropped-energy";
 import * as containerRefueler from "../action/refuel-from-container";
 import * as mineRefueler from "../action/refuel-from-energy-source";
 import { queueSuccessor } from "action/queue-successor";
@@ -57,7 +58,7 @@ export const run = (creep: Creep) => {
     }
 
     if (!creep.memory.building) {
-      if (!containerRefueler.run(creep)) {
+      if (!droppedRefueler.run(creep) || !containerRefueler.run(creep)) {
         mineRefueler.run(creep);
       }
     }
