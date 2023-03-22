@@ -1,6 +1,6 @@
 import {moveCreepTo} from "../nav/pathfinder";
 
-export const run = (creep: Creep) => {
+export const run = (creep: Creep): boolean => {
   if(creep.store.getFreeCapacity() > 0) {
     const source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
       filter: resource => resource.resourceType === RESOURCE_ENERGY
