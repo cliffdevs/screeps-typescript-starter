@@ -35,7 +35,7 @@ export default {
     harvester: 0,
     maxharvester: 2,
     recycler: 0,
-    refueler: 1,
+    refueler: 0,
     remoteminer: 0,
     upgrader: 2
   },
@@ -47,7 +47,7 @@ export default {
     harvester: 0,
     maxharvester: 2,
     recycler: 0,
-    refueler: 1,
+    refueler: 0,
     remoteminer: 0,
     upgrader: 2
   },
@@ -59,7 +59,7 @@ export default {
     harvester: 0,
     maxharvester: 2,
     recycler: 0,
-    refueler: 1,
+    refueler: 0,
     remoteminer: 0,
     upgrader: 4
   },
@@ -71,7 +71,7 @@ export default {
     harvester: 0,
     maxharvester: 2,
     recycler: 0,
-    refueler: 1,
+    refueler: 0,
     remoteminer: 0,
     upgrader: 4
   },
@@ -83,7 +83,7 @@ export default {
     harvester: 0,
     maxharvester: 2,
     recycler: 0,
-    refueler: 1,
+    refueler: 0,
     remoteminer: 0,
     upgrader: 4
   },
@@ -95,7 +95,7 @@ export default {
     harvester: 0,
     maxharvester: 2,
     recycler: 0,
-    refueler: 1,
+    refueler: 0,
     remoteminer: 0,
     upgrader: 1
   }
